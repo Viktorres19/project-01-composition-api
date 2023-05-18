@@ -5,10 +5,11 @@
 
     <h3>{{ counterData.title }}:</h3>
     <div>
-      <button @click="decreaseCounter">-</button>
+      <button @click="decreaseCounter(1)">-</button>
       <span class="counter">{{ counterData.count }}</span>
-      <button @click="increaseCounter">+</button>
+      <button @click="increaseCounter(1)">+</button>
     </div>
+    <p>This counter is {{ oddOrEven }}</p>
     <div class="edit">
       <h4>Edit counter title:</h4>
       <input v-model="counterData.title" type="text">
@@ -17,24 +18,32 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, computed, watch } from 'vue'
 
-const appTitle = 'My Amazing Counter App'
-
-/* const counter = ref(0),
-      counterTitle = ref('My Counter') */
+const appTitle = 'My Ok Counter App'
 
 const counterData = reactive({
   count: 0,
   title: 'My counter'
 })
 
-const increaseCounter = () => {
-  counterData.count++
+watch(() => counterData.count, (newCount) => {
+  if (newCount === 20) {
+    alert('Way to go! You made it to 20!!')
+  }
+})
+
+const oddOrEven = computed(() => {
+  if (counterData.count % 2 === 0) return 'even'
+  return 'odd'
+})
+
+const increaseCounter = amount => {
+  counterData.count += amount
 }
 
-const decreaseCounter = () => {
-  counterData.count--
+const decreaseCounter = amount => {
+  counterData.count -= amount
 }
 </script>
 
